@@ -132,32 +132,32 @@
             <ul>
 <li><p>1、创建隐藏账号</p>
 <ul>
-<li>net user test$ 123@qwe /add<br><img src="../..//image/2021091501.png" alt="avatar"></li>
+<li>net user test$ 123@qwe /add<br><img src="/image/2021091501.png" alt="avatar"></li>
 </ul>
 </li>
 <li><p>2、将创建的账号加入administrators组</p>
 <ul>
-<li>net localgroup administrators test$ /add<br><img src="../../image/2021091502.png" alt="avatar"></li>
+<li>net localgroup administrators test$ /add<br><img src="/image/2021091502.png" alt="avatar"></li>
 </ul>
 </li>
-<li><p>3、此时在lusrgmr中还能看到<br><img src="../../image/2021091503.png" alt="avatar"></p>
+<li><p>3、此时在lusrgmr中还能看到<br><img src="/image/2021091503.png" alt="avatar"></p>
 </li>
-<li><p>4、展开注册表[HKEY_LOCAL_MACHINE\SAM\SAM]，右键为administrators用户赋予完全控制<br><img src="../../image/2021091504.png" alt="avatar"></p>
+<li><p>4、展开注册表[HKEY_LOCAL_MACHINE\SAM\SAM]，右键为administrators用户赋予完全控制<br><img src="/image/2021091504.png" alt="avatar"></p>
 </li>
 <li><p>5、F5刷新一下注册表</p>
 </li>
 <li><p>6、处理注册表</p>
 <ul>
 <li>在[SAM\Domains\Account\Users\Names]，选中test$，一个名为默认，类型为”0x3eb”的键值，其中”3eb”是test$用户SID的结尾，即RID</li>
-<li>在[SAM\Domains\Account\Users]里有一个以”3EB”结尾的子项，存放的是test$的信息。将此项和上面的test$分别导出成扩展名为.reg的注册表文件<br><img src="../../image/2021091506.png" alt="avatar"></li>
+<li>在[SAM\Domains\Account\Users]里有一个以”3EB”结尾的子项，存放的是test$的信息。将此项和上面的test$分别导出成扩展名为.reg的注册表文件<br><img src="/image/2021091506.png" alt="avatar"></li>
 </ul>
 </li>
 <li><p>7、删除test$用户</p>
 <ul>
-<li>net user test$ /del<br><img src="../../image/2021091507.png" alt="avatar"></li>
+<li>net user test$ /del<br><img src="/image/2021091507.png" alt="avatar"></li>
 </ul>
 </li>
-<li><p>8、再打开注册表，导入之前的两个注册表文件，这样test$账户就隐藏了，但仍然会产生用户配置文件<br><img src="../../image/2021091508.png" alt="avatar"></p>
+<li><p>8、再打开注册表，导入之前的两个注册表文件，这样test$账户就隐藏了，但仍然会产生用户配置文件<br><img src="/image/2021091508.png" alt="avatar"></p>
 </li>
 <li><p>9、展开[SAM\Domains\Account\Users]下的000001F4，将F的键值数据全部复制，粘贴到000003EB的F键值中，也就是将administrator用户的SID复制给了test$，test$就成了administrator的影子账户与其用同一用户配置文件</p>
 </li>
