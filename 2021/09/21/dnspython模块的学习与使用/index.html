@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="felzl">
+
+
+
+
+
+<title>dnspython模块的学习与使用 | felzl</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Felzl&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Felzl&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">dnspython模块的学习与使用</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">felzl</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">September 21, 2021&nbsp;&nbsp;16:15:18</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/python/">python</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <ul>
+<li><code>pip install dnspython</code></li>
+<li>dnspython版本：2.1.0</li>
+<li>python版本：3.9.4<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 主要API</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">resolve</span>(<span class="params">qname, rdtype=dns.rdatatype.A, rdclass=dns.rdataclass.IN,</span></span></span><br><span class="line"><span class="params"><span class="function">            tcp=<span class="literal">False</span>, source=<span class="literal">None</span>, raise_on_no_answer=<span class="literal">True</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">            source_port=<span class="number">0</span>, lifetime=<span class="literal">None</span>, search=<span class="literal">None</span></span>):</span></span><br><span class="line"><span class="comment"># rdclass:网络类型；</span></span><br><span class="line"><span class="comment"># tcp:指定査询是否启用TCP协议；</span></span><br><span class="line"><span class="comment"># source:査询源的地址；</span></span><br><span class="line"><span class="comment"># source_port:査询源的端口 ;</span></span><br><span class="line"><span class="comment"># raise_on_no_answer:指定査询无应答时是否触发异常，默认为True</span></span><br></pre></td></tr></table></figure></li>
+<li>其中，qname参数为查询的域名。rdtype参数用来指定RR资源的类型，常用的有以下几种<ul>
+<li>A记录，将主机名装换成IP地址</li>
+<li>MX记录，邮件交换记录，定义邮件服务器的域名</li>
+<li>CNAME记录，指别名记录，实现域名间的映射</li>
+<li>NS记录，标记区域的域名服务器及授权子域</li>
+<li>PTR记录，反向解析，与A记录相反，将IP装换成主机名;</li>
+<li>SOA记录，SOA标记，一个起始授权区的定义</li>
+</ul>
+</li>
+</ul>
+<hr>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># A记录</span></span><br><span class="line"><span class="keyword">import</span> dns.resolver</span><br><span class="line">domain = <span class="string">&quot;baidu.com&quot;</span></span><br><span class="line">A = dns.resolver.resolve(domain,<span class="string">&#x27;A&#x27;</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> A:</span><br><span class="line">    <span class="built_in">print</span>(i)</span><br></pre></td></tr></table></figure>
+<hr>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># MX记录</span></span><br><span class="line"><span class="keyword">import</span> dns.resolver</span><br><span class="line">domain = <span class="string">&quot;qq.com&quot;</span></span><br><span class="line">MX = dns.resolver.resolve(domain,<span class="string">&#x27;MX&#x27;</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> MX:</span><br><span class="line">    <span class="built_in">print</span>(i)</span><br></pre></td></tr></table></figure>
+<hr>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># NS记录</span></span><br><span class="line"><span class="keyword">import</span> dns.resolver</span><br><span class="line">domain = <span class="string">&quot;qq.com&quot;</span></span><br><span class="line">NS = dns.resolver.resolve(domain,<span class="string">&#x27;NS&#x27;</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> NS:</span><br><span class="line">    <span class="built_in">print</span>(i)</span><br></pre></td></tr></table></figure>
+<hr>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># CNAME记录</span></span><br><span class="line"><span class="keyword">import</span> dns.resolver</span><br><span class="line">domain = <span class="string">&quot;baidu.com&quot;</span></span><br><span class="line">CNAME = dns.resolver.resolve(domain,<span class="string">&#x27;CNAME&#x27;</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> CNAME:</span><br><span class="line">    <span class="built_in">print</span>(i)</span><br></pre></td></tr></table></figure>
+<hr>
+<ul>
+<li>将其封装一下<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> dns.resolver</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_dns</span>(<span class="params">domain, option</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    DNS相关类型的数据解析成列表</span></span><br><span class="line"><span class="string">    param:</span></span><br><span class="line"><span class="string">        domain: 域名</span></span><br><span class="line"><span class="string">        option: rdtype类型</span></span><br><span class="line"><span class="string">    ret:</span></span><br><span class="line"><span class="string">        data_list: rdtype对应的结果列表</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    data_list = []</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        data = dns.resolver.resolve(domain,option)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> data:</span><br><span class="line">            data_list.append(<span class="built_in">str</span>(i))</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(e)</span><br><span class="line">    <span class="keyword">return</span> data_list</span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">parse_dns</span>(<span class="params">domain</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    解析域名，返回解析的相关数据</span></span><br><span class="line"><span class="string">    param:</span></span><br><span class="line"><span class="string">        damain:</span></span><br><span class="line"><span class="string">    ret:</span></span><br><span class="line"><span class="string">        DNS_dict: &#123;&#x27;A&#x27;: [&#x27;220.181.38.xxx&#x27;], &#x27;MX&#x27;: [], &#x27;NS&#x27;: [], &#x27;CNAME&#x27;: []&#125;</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    DNS_dict = &#123;&#125;</span><br><span class="line">    A_list = get_dns(domain,<span class="string">&quot;A&quot;</span>)</span><br><span class="line">    DNS_dict[<span class="string">&quot;A&quot;</span>] = A_list</span><br><span class="line">    MX_list = get_dns(domain,<span class="string">&quot;MX&quot;</span>)</span><br><span class="line">    DNS_dict[<span class="string">&quot;MX&quot;</span>] = MX_list</span><br><span class="line">    NS_list = get_dns(domain,<span class="string">&quot;NS&quot;</span>)</span><br><span class="line">    DNS_dict[<span class="string">&quot;NS&quot;</span>] = NS_list</span><br><span class="line">    CNAME_list = get_dns(domain,<span class="string">&quot;CNAME&quot;</span>)</span><br><span class="line">    DNS_dict[<span class="string">&quot;CNAME&quot;</span>] = CNAME_list</span><br><span class="line">    <span class="keyword">return</span> DNS_dict</span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span>():</span></span><br><span class="line">    domain = <span class="string">&quot;xxx.com&quot;</span></span><br><span class="line">    DNS_dict = parse_dns(domain)</span><br><span class="line">    <span class="built_in">print</span>(DNS_dict)</span><br><span class="line">    </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h3 id="dns监控"><a href="#dns监控" class="headerlink" title="dns监控"></a>dns监控</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> dns.resolver</span><br><span class="line"><span class="keyword">import</span> http.client</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_ipList</span>(<span class="params">domain</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    解析A记录</span></span><br><span class="line"><span class="string">    param:</span></span><br><span class="line"><span class="string">        domain: 域名</span></span><br><span class="line"><span class="string">    ret:</span></span><br><span class="line"><span class="string">        ip_list: A记录，解析的IP列表</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    ip_list = []</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        A = dns.resolver.resolve(domain, <span class="string">&#x27;A&#x27;</span>)</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;dns resolver error&#x27;</span>+<span class="built_in">str</span>(e))</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> A:</span><br><span class="line">        ip_list.append(<span class="built_in">str</span>(i))</span><br><span class="line">    <span class="keyword">return</span> ip_list</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check_ip</span>(<span class="params">ip</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    检查IP能否正常访问</span></span><br><span class="line"><span class="string">    param:</span></span><br><span class="line"><span class="string">        ip:</span></span><br><span class="line"><span class="string">    ret:</span></span><br><span class="line"><span class="string">        None</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    check_url = ip +<span class="string">&#x27;:80&#x27;</span></span><br><span class="line">    get_content = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    <span class="comment"># 定义http连接超时5秒</span></span><br><span class="line">    http.client.socket.setdefaulttimeout(<span class="number">5</span>) </span><br><span class="line">    <span class="comment"># 创建连接对象</span></span><br><span class="line">    conn = http.client.HTTPConnection(check_url)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="comment"># 发起url请求 添加host主机头部</span></span><br><span class="line">        conn.request(<span class="string">&#x27;GET&#x27;</span>, <span class="string">&#x27;/&#x27;</span>, headers=&#123;<span class="string">&#x27;Host&#x27;</span>:domain_app&#125;)</span><br><span class="line">        r = conn.getresponse()</span><br><span class="line">        <span class="comment"># 获取url页面前15字符</span></span><br><span class="line">        get_content = r.read(<span class="number">15</span>).decode(<span class="string">&quot;utf-8&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;get---&gt;&quot;</span>,get_content)</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        <span class="keyword">if</span> get_content.find(<span class="string">&quot;!DOCTYPE&quot;</span>) != -<span class="number">1</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="built_in">str</span>(ip) + <span class="string">&#x27;[OK]&#x27;</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="built_in">str</span>(ip) + <span class="string">&#x27;[error]&#x27;</span>)</span><br><span class="line"> </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    domain_app =<span class="string">&#x27;www.baidu.com&#x27;</span></span><br><span class="line">    ip_list = get_ipList(domain_app)</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(ip_list)&gt;<span class="number">0</span>:</span><br><span class="line">        <span class="keyword">for</span> ip <span class="keyword">in</span> ip_list:</span><br><span class="line">            check_ip(ip)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;dns resolver error&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<hr>
+<blockquote><footer><strong>python运维学习之dnspython模块</strong><cite><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42955452/article/details/107730804">blog.csdn.net/weixin_42955452/article/details/107730804</a></cite></footer></blockquote>
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>felzl</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://felzl.github.io/2021/09/21/dnspython%E6%A8%A1%E5%9D%97%E7%9A%84%E5%AD%A6%E4%B9%A0%E4%B8%8E%E4%BD%BF%E7%94%A8/">https://felzl.github.io/2021/09/21/dnspython%E6%A8%A1%E5%9D%97%E7%9A%84%E5%AD%A6%E4%B9%A0%E4%B8%8E%E4%BD%BF%E7%94%A8/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/python/"># python</a>
+                    
+                        <a href="/tags/%E8%BF%90%E7%BB%B4/"># 运维</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2021/09/17/docker%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8-kali-linux/">docker的安装和使用(kali linux)</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© felzl | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
