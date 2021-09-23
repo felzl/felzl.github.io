@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="felzl">
+
+
+
+
+
+<title>文件上传及绕过（PHP） | felzl</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Felzl&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Felzl&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">文件上传及绕过（PHP）</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">felzl</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">September 23, 2021&nbsp;&nbsp;22:13:08</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Web%E5%AE%89%E5%85%A8/">Web安全</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <ul>
+<li>eval<ul>
+<li>php4,5,7</li>
+<li>evaluate string as php code</li>
+</ul>
+</li>
+<li>一句话<ul>
+<li><code>&lt;?php @eval($_POST[&#39;hacker&#39;]); ?&gt;</code></li>
+</ul>
+</li>
+<li>通过curl执行”一句话”（bwapp）<ul>
+<li>curl -d “hacker=echo get_current_user();” http:127.0.0.1/images/shell.php</li>
+<li>-d：（–data）HTTP post data</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="IIS5-X-6-0解析漏洞"><a href="#IIS5-X-6-0解析漏洞" class="headerlink" title="IIS5.X/6.0解析漏洞"></a>IIS5.X/6.0解析漏洞</h3><ul>
+<li>1、当创建.asp的文件目录时，在此目录下的任意文件，服务器都解析为asp文件</li>
+<li>2、服务器默认不解析分号”;”后的内容</li>
+<li>利用形式<ul>
+<li><a target="_blank" rel="noopener" href="http://www.xxx.com/xx.asp/xx.jpg">www.xxx.com/xx.asp/xx.jpg</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.xxx.com/xx.asp;,jpg">www.xxx.com/xx.asp;,jpg</a><h3 id="Nginx解析漏洞"><a href="#Nginx解析漏洞" class="headerlink" title="Nginx解析漏洞"></a>Nginx解析漏洞</h3></li>
+</ul>
+</li>
+<li>在低版本Nginx中存在 PHP-CGI 导致的解析漏洞</li>
+<li>php.ini中的cgi.fix_pathinfo是默认开启的</li>
+<li>当URL中有不存在的文件时，php就会默认向前解析</li>
+<li>利用形式<ul>
+<li>访问 <a target="_blank" rel="noopener" href="http://www.xxx.com/phpinfo.jpg/1.php">www.xxx.com/phpinfo.jpg/1.php</a> (1.php不存在)</li>
+<li>会解析phpinfo.jpg文件，且按照php格式解析<h3 id="apache解析漏洞"><a href="#apache解析漏洞" class="headerlink" title="apache解析漏洞"></a>apache解析漏洞</h3></li>
+</ul>
+</li>
+<li>apache在1.x和2.x版本中存在解析漏洞</li>
+<li>apache从右至左判断后缀，路过非可识别后缀</li>
+<li>利用形式<ul>
+<li>上传 shell.php.test</li>
+<li>访问 shell.php.test，服务器会解析shell.php.test文件，按照php文件格式解析<h3 id="前端验证绕过"><a href="#前端验证绕过" class="headerlink" title="前端验证绕过"></a>前端验证绕过</h3></li>
+</ul>
+</li>
+<li>网站在前端用javascript来做校验</li>
+<li>利用形式<ul>
+<li>通过burp suite抓包，然后修改放行</li>
+<li>或 ，删除，禁止js代码<h3 id="htaccess绕过"><a href="#htaccess绕过" class="headerlink" title=".htaccess绕过"></a>.htaccess绕过</h3></li>
+</ul>
+</li>
+<li>分布式配置文件，使得配置文件可以随文件夹不同而不同</li>
+<li>启用了.htaccess文件的网站，使用此文件类型来绕过限制较全的 黑名单 过滤</li>
+<li>利用形式<ul>
+<li>上传一个.htaccess文件，文件内容设置为 AddType application/x-httpd-php .test</li>
+<li>上传一句话，文件名设置为shell.test</li>
+<li>在浏览器访问shell.test即可执行<h3 id="大小写绕过"><a href="#大小写绕过" class="headerlink" title="大小写绕过"></a>大小写绕过</h3></li>
+</ul>
+</li>
+<li>比较简单的绕过方式，针对黑名单</li>
+<li>和windows大小写不敏感有关</li>
+<li>linux平台为了用户体验，配置了大小不敏感<h3 id="windows文件流特性绕过"><a href="#windows文件流特性绕过" class="headerlink" title="windows文件流特性绕过"></a>windows文件流特性绕过</h3></li>
+<li>NTFS实现了多文件流特性<ul>
+<li>默认使用未命名的文件流</li>
+<li>默认不显示文件的命名文件流</li>
+<li>命名的文件流在功能上和默认使用的未命名文件流一致，甚至可以用来启动程序</li>
+</ul>
+</li>
+<li>测试<ul>
+<li>echo 111 &gt; test.txt:111.txt<ul>
+<li>将111写入test.txt，指定文件流是111.txt</li>
+</ul>
+</li>
+<li>echo test &gt; test.txt</li>
+<li>echo 222 &gt; test.txt::$data<ul>
+<li>将222写入test.txt，使用默认数据流</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>利用形式<ul>
+<li>利用文件流特性构建一个文件类型符合我们要求，又能达到解析目的的文件<h3 id="00截断绕过"><a href="#00截断绕过" class="headerlink" title="%00截断绕过"></a>%00截断绕过</h3></li>
+</ul>
+</li>
+<li>属于编码绕过</li>
+<li>路径以拼接的形式从前端获取，我们就可以在路径上截断</li>
+<li>%00是URL的结尾符，如果不是通过URL传输，则写成其它形式<ul>
+<li>想要输入%00，通过BP截断后，在Hex中更改</li>
+</ul>
+</li>
+<li>截断攻击生效的原因<ul>
+<li>我们能分别控制：存储路径，文件名</li>
+</ul>
+</li>
+<li>利用形式<ul>
+<li>设置save_path=../upload/a.php%00</li>
+<li>上传内容为”一句话”的jpg文件<h3 id="文件头检测绕过"><a href="#文件头检测绕过" class="headerlink" title="文件头检测绕过"></a>文件头检测绕过</h3></li>
+</ul>
+</li>
+<li>工具：UltraEdit</li>
+<li>常见图片文件头<ul>
+<li>png: 89 50 4E 47</li>
+<li>jpg: FF D8 FF DB</li>
+<li>gif: 47 49 46 38</li>
+</ul>
+</li>
+<li>将代码聚合到图片中<h3 id="源代码审计"><a href="#源代码审计" class="headerlink" title="源代码审计"></a>源代码审计</h3></li>
+<li>代码逻辑是否足够严谨</li>
+<li>函数调用是否足够安全</li>
+</ul>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>felzl</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://felzl.github.io/2021/09/23/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%8F%8A%E7%BB%95%E8%BF%87%EF%BC%88PHP%EF%BC%89/">https://felzl.github.io/2021/09/23/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%8F%8A%E7%BB%95%E8%BF%87%EF%BC%88PHP%EF%BC%89/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/"># 文件上传</a>
+                    
+                        <a href="/tags/PHP/"># PHP</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2021/09/21/dnspython%E6%A8%A1%E5%9D%97%E7%9A%84%E5%AD%A6%E4%B9%A0%E4%B8%8E%E4%BD%BF%E7%94%A8/">dnspython模块的学习与使用</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© felzl | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
