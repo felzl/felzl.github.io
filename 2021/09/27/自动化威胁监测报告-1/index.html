@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="felzl">
+
+
+
+
+
+<title>自动化威胁监测报告(1) | felzl</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Felzl&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Felzl&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">自动化威胁监测报告(1)</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">felzl</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">September 27, 2021&nbsp;&nbsp;20:13:11</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/python/">python</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <ul>
+<li><p>威胁监测可以导出excel表格</p>
+<ul>
+<li>表头：威胁名称、事件分类、攻击源、受威胁主机、级别、攻击阶段、开始时间、结束时间</li>
+</ul>
+</li>
+<li><p>每个月要出一份报告，每个月的报告都有很多相似的地方，我决定用一份报告提取出内容，总结成模板，然后用python处理表格的数据，这样可以极大简化以后的工作</p>
+</li>
+<li><p>接下来只说主要内容，控制模块不展示，不涉及数据，如果有建议或疑问：<code>felzll@163.com</code></p>
+</li>
+<li><p>主要步骤</p>
+<ul>
+<li>1、分析报告，以段落分开，总结出每一章可固定的内容，把数据部分用标识符标记出来，形成模板</li>
+<li>2、读取excel数据，分析，有些地方需要描图</li>
+<li>3、将分析后的数据，图片与模板结合，放入预处理区</li>
+<li>4、将预处理区的数据编排写入doc文档</li>
+</ul>
+</li>
+<li><p>python-docx处理doc报告数据</p>
+<ul>
+<li>python-docx以前是不支持doc的，现在支持了</li>
+</ul>
+</li>
+<li><p>语言版本：python3.9.4</p>
+</li>
+<li><p>因为是边学边实践文章中的代码采用了两种不同形式的注释，一种是google式的，一种是python推荐的，我都尝试了</p>
+<h3 id="处理现有报告形成模板"><a href="#处理现有报告形成模板" class="headerlink" title="处理现有报告形成模板"></a>处理现有报告形成模板</h3></li>
+<li><p>将同一类别的段落合并</p>
+</li>
+<li><p>将每一个段落按顺序写入TXT文本</p>
+</li>
+<li><p>然后将数据部分用符号标记</p>
+<ul>
+<li>总体威胁数量为#005#。其中，#005#。<h3 id="分析报表数据"><a href="#分析报表数据" class="headerlink" title="分析报表数据"></a>分析报表数据</h3></li>
+</ul>
+</li>
+<li><p><code>pip install pyexcel</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_excel_data</span>(<span class="params">path,option</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    返回excel文件的行或列的内容</span></span><br><span class="line"><span class="string">    :param path: 文件路径加文件名</span></span><br><span class="line"><span class="string">    :param option: 传入row 或 column表示获取 行 或 列</span></span><br><span class="line"><span class="string">    :return: 返回所需的行 或 列 的 list</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    sheet = pyexcel.get_sheet(file_name=path)</span><br><span class="line">    <span class="keyword">if</span> option == <span class="string">&quot;row&quot;</span>:</span><br><span class="line">        len_data = sheet.number_of_rows()</span><br><span class="line">    <span class="keyword">elif</span> option == <span class="string">&quot;column&quot;</span>:</span><br><span class="line">        len_data = sheet.number_of_columns()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">    data_list = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(len_data):</span><br><span class="line">        <span class="keyword">if</span> option == <span class="string">&quot;row&quot;</span>:</span><br><span class="line">            data = sheet.row[i]</span><br><span class="line">        <span class="keyword">elif</span> option == <span class="string">&quot;column&quot;</span>:</span><br><span class="line">            data = sheet.column[i]</span><br><span class="line">        <span class="comment"># print(data)</span></span><br><span class="line">        data_list.append(data)</span><br><span class="line">    <span class="keyword">return</span> data_list</span><br></pre></td></tr></table></figure></li>
+<li><p>按行读取，方便处理威胁事件</p>
+</li>
+<li><p>按列读取，方便统计总体信息</p>
+</li>
+</ul>
+<hr>
+<ul>
+<li>获取报表的开始日期和结束日期，拼接好写入文件<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_file_time</span>(<span class="params">path, data_list</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    从列表中获取开始时间和结果时间</span></span><br><span class="line"><span class="string">    :param data_list: datatime类型列表</span></span><br><span class="line"><span class="string">    :return str 2021年07月22日至2021年07月29日</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    start_time = data_list[<span class="number">6</span>][<span class="number">1</span>].strftime(<span class="string">&#x27;%Y年%m月%d日&#x27;</span>)</span><br><span class="line">    end_time = data_list[<span class="number">7</span>][-<span class="number">1</span>].strftime(<span class="string">&#x27;%Y年%m月%d日&#x27;</span>)</span><br><span class="line">    my_time = start_time + <span class="string">&quot;至&quot;</span> + end_time + <span class="string">&quot;\n&quot;</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(path,<span class="string">&quot;w+&quot;</span>,encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(my_time)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<ul>
+<li>统计报表整体信息<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">parse_excel_list</span>(<span class="params">data_list</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    解析excel的列的数据</span></span><br><span class="line"><span class="string">    :param data_list: 读取到的原始excel列内容</span></span><br><span class="line"><span class="string">    :return: 返回一个[[(内容，次数)],] 从大到小排序</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    total_list = []</span><br><span class="line">    <span class="keyword">for</span> col_data <span class="keyword">in</span> data_list:</span><br><span class="line">        <span class="keyword">del</span> col_data[<span class="number">0</span>] <span class="comment"># 除去表头</span></span><br><span class="line">        col_data.sort()</span><br><span class="line">        len_list = <span class="built_in">len</span>(col_data)-<span class="number">1</span></span><br><span class="line">        data_dict = &#123;&#125;</span><br><span class="line">        count_data = <span class="number">0</span> <span class="comment"># 统计次数</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(len_list):</span><br><span class="line">            count_data += <span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> col_data[i] != col_data[i+<span class="number">1</span>] <span class="keyword">or</span> i==len_list-<span class="number">1</span>:</span><br><span class="line">                <span class="keyword">if</span> i==len_list-<span class="number">1</span>:</span><br><span class="line">                    count_data += <span class="number">1</span></span><br><span class="line">                data_dict[col_data[i]] = count_data</span><br><span class="line">                count_data = <span class="number">0</span></span><br><span class="line">        data_dict = <span class="built_in">sorted</span>(data_dict.items(), key=<span class="keyword">lambda</span> kv:kv[<span class="number">1</span>], reverse=<span class="literal">True</span>) <span class="comment"># items()后得到一个元组，kv:kv[1],按照元组的第二个元素排序</span></span><br><span class="line">        total_list.append(data_dict)</span><br><span class="line">    <span class="keyword">return</span> total_list</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>felzl</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://felzl.github.io/2021/09/27/%E8%87%AA%E5%8A%A8%E5%8C%96%E5%A8%81%E8%83%81%E7%9B%91%E6%B5%8B%E6%8A%A5%E5%91%8A-1/">https://felzl.github.io/2021/09/27/%E8%87%AA%E5%8A%A8%E5%8C%96%E5%A8%81%E8%83%81%E7%9B%91%E6%B5%8B%E6%8A%A5%E5%91%8A-1/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/python/"># python</a>
+                    
+                        <a href="/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E5%8A%9E%E5%85%AC/"># 自动化办公</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2021/09/23/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%8F%8A%E7%BB%95%E8%BF%87%EF%BC%88PHP%EF%BC%89/">文件上传及绕过（PHP）</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© felzl | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
