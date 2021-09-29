@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="felzl">
+
+
+
+
+
+<title>自动化威胁监测报告(3) | felzl</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Felzl&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Felzl&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">自动化威胁监测报告(3)</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">felzl</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">September 29, 2021&nbsp;&nbsp;19:06:42</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/python/">python</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="处理事件中的CVE"><a href="#处理事件中的CVE" class="headerlink" title="处理事件中的CVE"></a>处理事件中的CVE</h3><ul>
+<li>我采用爬虫抓取公共漏洞库中的CVE信息</li>
+<li>同样的URL地址也不展示了<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">cve_spider</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.url = <span class="string">&quot;http://xxxxxx.org.cn/vulns?search_type=t_id&amp;keyword=&#123;&#125;&amp;cvss_floor=&amp;cvss_ceil=&amp;pubtime_floor=&amp;pubtime_ceil=&quot;</span></span><br><span class="line">        self.headers = &#123;<span class="string">&quot;User-Agent&quot;</span>:<span class="string">&quot;Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1&quot;</span>&#125;</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_data</span>(<span class="params">self,cve</span>):</span></span><br><span class="line">        self.url = self.url.<span class="built_in">format</span>(cve)</span><br><span class="line">        response = requests.get(self.url, headers=self.headers, timeout=<span class="number">5</span>).content.decode(<span class="string">&quot;utf-8&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> response</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse_url</span>(<span class="params">self, response, cve</span>):</span></span><br><span class="line">        com_str = <span class="string">r&quot;&quot;&quot;&lt;a href=.*\s*&#123;&#125;&quot;&quot;&quot;</span>.<span class="built_in">format</span>(cve)</span><br><span class="line">        <span class="comment"># print(com_str)</span></span><br><span class="line">        re_com = re.<span class="built_in">compile</span>(com_str)</span><br><span class="line">        ret = re_com.search(response)</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            ret = re.search(<span class="string">r&quot;\&quot;.*\&quot;&quot;</span>,ret.group())</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            ret = <span class="literal">None</span></span><br><span class="line">        <span class="keyword">if</span> ret:</span><br><span class="line">            url = ret.group()</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            url = <span class="literal">None</span></span><br><span class="line">        <span class="keyword">return</span> url</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse_data</span>(<span class="params">self,url</span>):</span></span><br><span class="line">        <span class="keyword">if</span> url:</span><br><span class="line">            url = <span class="string">&quot;http://xxxxxx.org.cn&#123;&#125;&quot;</span>.<span class="built_in">format</span>(url[<span class="number">1</span>:-<span class="number">1</span>])</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        response = requests.get(url, headers=self.headers, timeout=<span class="number">10</span>).content.decode(<span class="string">&quot;utf-8&quot;</span>)</span><br><span class="line">        bug_str = <span class="string">r&quot;&quot;&quot;&lt;div class=&quot;row bug_article.*\s*.*\s*.*\s*&lt;/p&gt;&quot;&quot;&quot;</span></span><br><span class="line">        re_com = re.<span class="built_in">compile</span>(bug_str)</span><br><span class="line">        ret = re_com.search(response)</span><br><span class="line">        ret = ret.group().split(<span class="string">&quot;&lt;p class=&#x27;pad30T pad30B mrg0B&#x27; style=&#x27;word-wrap: break-word;&#x27;&gt;&quot;</span>)[<span class="number">1</span>]</span><br><span class="line">        ret = ret[<span class="number">25</span>:-<span class="number">25</span>]</span><br><span class="line">        <span class="keyword">return</span> ret</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span>(<span class="params">self, cve</span>):</span></span><br><span class="line">        response = self.get_data(cve)</span><br><span class="line">        url = self.parse_url(response,cve)</span><br><span class="line">        bug_data = self.parse_data(url)</span><br><span class="line">        <span class="keyword">return</span> bug_data</span><br><span class="line">        </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    cve = <span class="string">&quot;CVE-2017-9791&quot;</span></span><br><span class="line">    spider = cve_spider()</span><br><span class="line">    data = spider.run(cve)</span><br><span class="line">    <span class="built_in">print</span>(data)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="将数据与模板整合"><a href="#将数据与模板整合" class="headerlink" title="将数据与模板整合"></a>将数据与模板整合</h3><ul>
+<li>我列举了一部分数据的处理，当然还有一些我也没有处理到</li>
+<li>将模板的数据读取出来</li>
+<li>与分析的数据拼接</li>
+<li>将拼接完成的数据和图，写入预处理文件夹</li>
+</ul>
+<h3 id="处理DOC文档"><a href="#处理DOC文档" class="headerlink" title="处理DOC文档"></a>处理DOC文档</h3><ul>
+<li>将预处理文件夹中的文件，读取出来，排版</li>
+<li>通过python-docx库，import docx<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add_breaks</span>(<span class="params">document, is_page</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    添加分页符，或 换行</span></span><br><span class="line"><span class="string">    :param is_page: Ture,分页符，False，换行符</span></span><br><span class="line"><span class="string">    :return None</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    paragraph = document.add_paragraph()</span><br><span class="line">    run = paragraph.add_run()</span><br><span class="line">    <span class="comment">#换页只需要把docx.enum.text.WD_BREAK.PAGE作为唯一的参数传递给add_break</span></span><br><span class="line">    <span class="comment">#如果是换行的话就不需要使用docx.enum.text.WD_BREAK.PAGE参数</span></span><br><span class="line">    <span class="keyword">if</span> is_page:</span><br><span class="line">        run.add_break(docx.enum.text.WD_BREAK.PAGE)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        run.add_break()</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<ul>
+<li><p>接下来处理标题，小标题</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">write_docx</span>(<span class="params">document, write_context, istitle, str_position, font_name, font_size</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    写入一字符串</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    :param document: 文档对象</span></span><br><span class="line"><span class="string">    :param write_context: 要写入的字符串</span></span><br><span class="line"><span class="string">    :param istitle: 是否用标题样式</span></span><br><span class="line"><span class="string">    :param str_position: 位置，1，左对齐，2，居中对齐，3，右对齐</span></span><br><span class="line"><span class="string">    :param font_name: 使用什么字体</span></span><br><span class="line"><span class="string">    :param font_size: 字体大小</span></span><br><span class="line"><span class="string">    :return None</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> istitle == <span class="number">1</span>:</span><br><span class="line">        heading = document.add_heading()</span><br><span class="line">        heading_format = heading.paragraph_format</span><br><span class="line">        <span class="keyword">if</span> str_position == <span class="number">1</span>:</span><br><span class="line">            heading_format.alignment = WD_ALIGN_PARAGRAPH.LEFT</span><br><span class="line">        <span class="keyword">elif</span> str_position == <span class="number">2</span>:</span><br><span class="line">            heading_format.alignment = WD_ALIGN_PARAGRAPH.CENTER</span><br><span class="line">        <span class="keyword">elif</span> str_position == <span class="number">3</span>:</span><br><span class="line">            heading_format.alignment = WD_ALIGN_PARAGRAPH.RIGHT</span><br><span class="line">        run = heading.add_run(write_context)</span><br><span class="line">        run.font.name=font_name</span><br><span class="line">        run._element.rPr.rFonts.<span class="built_in">set</span>(qn(<span class="string">&#x27;w:eastAsia&#x27;</span>), font_name)</span><br><span class="line">        run.font.color.rgb = RGBColor(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>)</span><br><span class="line">        run.font.size = Pt(font_size)</span><br><span class="line">    <span class="keyword">elif</span> istitle == <span class="number">2</span>:</span><br><span class="line">        paragraph = document.add_paragraph()</span><br><span class="line">        paragraph_format = paragraph.paragraph_format</span><br><span class="line">        paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER</span><br><span class="line">        run = paragraph.add_run(write_context)</span><br><span class="line">        run.font.name=font_name</span><br><span class="line">        run._element.rPr.rFonts.<span class="built_in">set</span>(qn(<span class="string">&#x27;w:eastAsia&#x27;</span>), font_name)</span><br><span class="line">        run.font.color.rgb = RGBColor(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>)</span><br><span class="line">        run.font.size = Pt(font_size)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        paragraph = document.add_paragraph(write_context)</span><br><span class="line">        paragraph_format = paragraph.paragraph_format</span><br><span class="line">        paragraph_format.first_line_indent = <span class="number">406400</span> <span class="comment"># 首行缩进 2 个字符</span></span><br><span class="line">        <span class="keyword">if</span> str_position == <span class="number">1</span>:</span><br><span class="line">            paragraph_format.alignment = WD_ALIGN_PARAGRAPH.LEFT <span class="comment"># 左对齐</span></span><br><span class="line">        <span class="keyword">elif</span> str_position == <span class="number">2</span>:</span><br><span class="line">            paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER <span class="comment"># 居中对齐</span></span><br><span class="line">        <span class="keyword">elif</span> str_position == <span class="number">3</span>:</span><br><span class="line">            paragraph_format.alignment = WD_ALIGN_PARAGRAPH.RIGHT <span class="comment"># 右对齐</span></span><br><span class="line">        <span class="keyword">elif</span> str_position == <span class="number">4</span>:</span><br><span class="line">            paragraph_format.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY <span class="comment"># 两端对齐</span></span><br><span class="line">        document.styles[<span class="string">&#x27;Normal&#x27;</span>].font.name = font_name <span class="comment"># Normal 表示 正文</span></span><br><span class="line">        document.styles[<span class="string">&#x27;Normal&#x27;</span>]._element.rPr.rFonts.<span class="built_in">set</span>(qn(<span class="string">&#x27;w:eastAsia&#x27;</span>), font_name)</span><br><span class="line">        document.styles[<span class="string">&#x27;Normal&#x27;</span>].font.size = Pt(font_size) <span class="comment"># 12 == 小四</span></span><br><span class="line">        document.styles[<span class="string">&#x27;Normal&#x27;</span>].font.color.rgb = RGBColor(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>)</span><br></pre></td></tr></table></figure></li>
+<li><p>处理正文</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">write_normal_text</span>(<span class="params">document, txt_path</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    写入正文</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    data_list = read_txt(txt_path)</span><br><span class="line">    <span class="keyword">for</span> data <span class="keyword">in</span> data_list:</span><br><span class="line">        write_docx(document, data[:-<span class="number">1</span>], <span class="number">3</span>, <span class="number">1</span>, <span class="string">u&quot;宋体&quot;</span>, <span class="number">12</span>)</span><br></pre></td></tr></table></figure></li>
+<li><p>处理图片</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">write_img</span>(<span class="params">document, img_path</span>):</span></span><br><span class="line">    paragraph = document.add_paragraph()</span><br><span class="line">    paragraph_format = paragraph.paragraph_format</span><br><span class="line">    paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER</span><br><span class="line">    run = paragraph.add_run()</span><br><span class="line">    <span class="comment"># inline_shape = document.paragraphs[1].add_run().add_picture(&#x27;111.jpg&#x27;) </span></span><br><span class="line">    inline_shape = run.add_picture(img_path) <span class="comment"># 添加图像</span></span><br><span class="line">    inline_shape.height = Cm(<span class="number">7.5</span>)</span><br><span class="line">    inline_shape.width = Cm(<span class="number">14</span>)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="处理CSV，以表格形式写入DOCX"><a href="#处理CSV，以表格形式写入DOCX" class="headerlink" title="处理CSV，以表格形式写入DOCX"></a>处理CSV，以表格形式写入DOCX</h3><ul>
+<li>因为报告中，还有一些表，我处理成了CSV<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">write_excle</span>(<span class="params">document, data_list, excel_size, merge_cells_list</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    将CSV文件读取出来，以表格的形式写入docx文档</span></span><br><span class="line"><span class="string">    :param document: 文档对象</span></span><br><span class="line"><span class="string">    :param data_list: 刚读取的CSV列表</span></span><br><span class="line"><span class="string">    :param excel_size: 一个标注列宽的列表</span></span><br><span class="line"><span class="string">    :merge_cells_list: 需要合并的单元格，为1的合并，其它需为0</span></span><br><span class="line"><span class="string">    :return None</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    len_row = <span class="built_in">len</span>(data_list)</span><br><span class="line">    len_column = <span class="built_in">len</span>(data_list[<span class="number">0</span>])</span><br><span class="line">    tb=document.add_table(rows=len_row-<span class="number">1</span>,cols=len_column) <span class="comment"># 创建一张 rows行 cols列 的表</span></span><br><span class="line">    tb.add_row()</span><br><span class="line">    s = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(len_column):</span><br><span class="line">        tb.cell(<span class="number">0</span>,i).width=Cm(excel_size[s])</span><br><span class="line">        tb.cell(<span class="number">0</span>,i).text=data_list[<span class="number">0</span>][i] <span class="comment">#添加表头</span></span><br><span class="line">        s += <span class="number">1</span></span><br><span class="line">    s = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> row <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,len_row):</span><br><span class="line">        <span class="keyword">for</span> col <span class="keyword">in</span> <span class="built_in">range</span>(len_column):</span><br><span class="line">            tb.cell(<span class="number">0</span>,col).width=Cm(excel_size[s])</span><br><span class="line">            s += <span class="number">1</span></span><br><span class="line">            tb.cell(row,col).text=data_list[row][col]</span><br><span class="line">            <span class="keyword">for</span> par <span class="keyword">in</span> tb.cell(row,col).paragraphs:</span><br><span class="line">                <span class="keyword">for</span> run <span class="keyword">in</span> par.runs:</span><br><span class="line">                    run.font.size = Pt(<span class="number">12</span>)</span><br><span class="line">                    run.font.name = <span class="string">u&#x27;宋体&#x27;</span></span><br><span class="line">                    run._element.rPr.rFonts.<span class="built_in">set</span>(qn(<span class="string">&#x27;w:eastAsia&#x27;</span>), <span class="string">u&#x27;宋体&#x27;</span>)</span><br><span class="line">        s = <span class="number">0</span></span><br><span class="line">    <span class="keyword">if</span> merge_cells_list:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="built_in">len</span>(merge_cells_list)-<span class="number">1</span>):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(merge_cells_list[<span class="number">0</span>])-<span class="number">1</span>):</span><br><span class="line">                <span class="keyword">if</span> merge_cells_list[i][j]==<span class="number">1</span> <span class="keyword">and</span> merge_cells_list[i][j+<span class="number">1</span>]==<span class="number">1</span>:</span><br><span class="line">                    tb.cell(i, j).merge(tb.cell(i, j+<span class="number">1</span>))</span><br><span class="line">                <span class="keyword">elif</span> merge_cells_list[i][j] == <span class="number">1</span> <span class="keyword">and</span> merge_cells_list[i+<span class="number">1</span>][j]==<span class="number">1</span>:</span><br><span class="line">                    tb.cell(i, j).merge(tb.cell(i+<span class="number">1</span>, j))</span><br><span class="line">    tb.style=<span class="string">&#x27;Table Grid&#x27;</span></span><br><span class="line">    tb.autofit=<span class="literal">True</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>felzl</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://felzl.github.io/2021/09/29/%E8%87%AA%E5%8A%A8%E5%8C%96%E5%A8%81%E8%83%81%E7%9B%91%E6%B5%8B%E6%8A%A5%E5%91%8A-3/">https://felzl.github.io/2021/09/29/%E8%87%AA%E5%8A%A8%E5%8C%96%E5%A8%81%E8%83%81%E7%9B%91%E6%B5%8B%E6%8A%A5%E5%91%8A-3/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/python/"># python</a>
+                    
+                        <a href="/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E5%8A%9E%E5%85%AC/"># 自动化办公</a>
+                    
+                        <a href="/tags/spider/"># spider</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2021/09/28/%E8%87%AA%E5%8A%A8%E5%8C%96%E5%A8%81%E8%83%81%E7%9B%91%E6%B5%8B%E6%8A%A5%E5%91%8A-2/">自动化威胁监测报告(2)</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© felzl | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
