@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="felzl">
+
+
+
+
+
+<title>数据处理(日常工作) | felzl</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Felzl&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Felzl&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">数据处理(日常工作)</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">felzl</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">October 29, 2021&nbsp;&nbsp;19:29:26</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/python/">python</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <ul>
+<li><p>今天要处理一份报告docx文件，80页左右，格式如下这个样子</p>
+<ul>
+<li><img src="/image/2021102901.png" alt="avatar"></li>
+</ul>
+</li>
+<li><p>我想python处理这些数据，但不好读取，我分析了一下</p>
+</li>
+<li><p>复制到excel中，再转成csv文件</p>
+<ul>
+<li><img src="/image/2021102902.png" alt="avatar"></li>
+</ul>
+</li>
+<li><p>根据文本特点，按”,,,,,,\n,,,,,,”分割觉得不错</p>
+<ul>
+<li>分割后，0和1，2和3等是一个表的</li>
+<li>用”% 2 == 0”和分开<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 处理不需要的端口</span></span><br><span class="line">port_list = [<span class="string">&quot;21&quot;</span>,<span class="string">&quot;22&quot;</span>,<span class="string">&quot;3389&quot;</span>]</span><br><span class="line"><span class="keyword">for</span> data <span class="keyword">in</span> t_data:</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>将需要的数据用split切割出来后，用”,”拼接，再存成CSV文件</p>
+</li>
+<li><p>我用的读文件方式是<code>all_data = f.readlines()</code>，这要用全局变量，堆栈存不了这么大的数据</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">parse_data</span>(<span class="params">data_list</span>):</span></span><br><span class="line">    l_data = <span class="built_in">len</span>(data_list)</span><br><span class="line">    cnt_data = []</span><br><span class="line">    t_str = <span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(l_data):</span><br><span class="line">        <span class="keyword">if</span> i % <span class="number">2</span> == <span class="number">0</span>:</span><br><span class="line">            ip = data_list[i].split(<span class="string">&quot;,,,,,,\n&quot;</span>)[<span class="number">0</span>][<span class="number">1</span>:]</span><br><span class="line">            sys_os = data_list[i].split(<span class="string">&quot;,,,,,,\n&quot;</span>)[<span class="number">1</span>].split(<span class="string">&quot; 设备类型&quot;</span>)[<span class="number">0</span>].split(<span class="string">&quot;：&quot;</span>)[<span class="number">1</span>]</span><br><span class="line">            <span class="keyword">if</span> sys_os == <span class="string">&quot; &quot;</span>:</span><br><span class="line">                sys_os = <span class="string">&quot;其它&quot;</span></span><br><span class="line">            t_str = ip + <span class="string">&quot;,&quot;</span> + sys_os + <span class="string">&quot;,&quot;</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            temp = data_list[i].split(<span class="string">&quot;\n&quot;</span>)</span><br><span class="line">            t_data = temp[<span class="number">2</span>:-<span class="number">1</span>]</span><br><span class="line">            port_list = [<span class="string">&quot;21&quot;</span>,<span class="string">&quot;22&quot;</span>,<span class="string">&quot;3389&quot;</span>] <span class="comment"># 不需要的端口</span></span><br><span class="line">            flag = <span class="number">0</span></span><br><span class="line">            <span class="keyword">for</span> data <span class="keyword">in</span> t_data:</span><br><span class="line">                t_port = data.split(<span class="string">&quot;,&quot;</span>)[<span class="number">0</span>]</span><br><span class="line">                <span class="keyword">if</span> t_port <span class="keyword">not</span> <span class="keyword">in</span> port_list:</span><br><span class="line">                    data = data.replace(<span class="string">&quot;,&quot;</span>,<span class="string">&quot;，&quot;</span>) <span class="comment"># 换成中文的逗号避免影响CSV</span></span><br><span class="line">                    t_str = t_str + data + <span class="string">&quot;,&quot;</span></span><br><span class="line">                    flag = <span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> flag == <span class="number">0</span>:</span><br><span class="line">                <span class="keyword">continue</span> <span class="comment"># ip 对应的 data 为空（没有需要的端口）</span></span><br><span class="line">        <span class="keyword">if</span> i%<span class="number">2</span>==<span class="number">1</span>:</span><br><span class="line">            cnt_data.append(t_str) <span class="comment"># 第次为奇数时为一个表</span></span><br><span class="line">            t_str = <span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="keyword">return</span> cnt_data</span><br><span class="line">    </span><br><span class="line">path = <span class="string">r&quot;数据2.csv&quot;</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(path,<span class="string">&quot;r+&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    all_data = f.readlines()</span><br><span class="line">    all_data = <span class="string">&quot;&quot;</span>.join(all_data)</span><br><span class="line">    s = <span class="string">&quot;,,,,,,\n,,,,,,&quot;</span></span><br><span class="line">    data_list = all_data.split(s)</span><br><span class="line">    </span><br><span class="line">cnt_data = parse_data(data_list)</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;tttttemp_new_data.csv&quot;</span>,<span class="string">&quot;w+&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="keyword">for</span> data <span class="keyword">in</span> cnt_data:</span><br><span class="line">        data += <span class="string">&quot;\n&quot;</span></span><br><span class="line">        f.write(data)</span><br></pre></td></tr></table></figure>
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>felzl</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://felzl.github.io/2021/10/29/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86-%E6%97%A5%E5%B8%B8%E5%B7%A5%E4%BD%9C/">https://felzl.github.io/2021/10/29/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86-%E6%97%A5%E5%B8%B8%E5%B7%A5%E4%BD%9C/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/python/"># python</a>
+                    
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/"># 数据处理</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2021/10/26/CTF-ping-misc/">CTF-ping(misc)</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© felzl | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
